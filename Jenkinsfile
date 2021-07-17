@@ -18,7 +18,7 @@ pipeline {
         
         stage ("Deploy") {
             steps {
-                echo "Building the app"
+                echo "Deploying the app"
             }
         }
     }
