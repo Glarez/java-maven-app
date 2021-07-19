@@ -21,6 +21,7 @@ pipeline {
                 // echo "Building the app version ${NEW_VERSION}" // this goes along with the NEW_VERSION Var declared on environment
                 // sh "mvn install" defined on tools section
                 echo "Building the app" 
+                sh "mvn --version"
             }
         }
 
