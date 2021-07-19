@@ -3,7 +3,7 @@ pipeline {
 
     agent any
     environment { // define ENVVARS to be used by stages
-        // NEW_VERSION = '1.0.1' // usuaaly you should extract the version number from source code
+        NEW_VERSION = '1.0.1' // usuaaly you should extract the version number from source code
         // SERVER_CREDENTIALS = credentials('server-credentials') // this take as a parameter the jenkins ID of the cred you're referencing
     }
     tools { // define build tools like mvn, gradle, jdk and so on for being used in stages
