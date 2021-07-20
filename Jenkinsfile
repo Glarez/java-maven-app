@@ -33,10 +33,28 @@ pipeline{
                 }
             }
         }
-        stage("Build"){
+        stage("test"){
                 steps{
                     script {
-                        gv.buildApp()
+                        gv.testApp()
+                    }
+                }
+                post{
+                    always{
+                        echo "========always========"
+                    }
+                    success{
+                        echo "========A executed successfully========"
+                    }
+                    failure{
+                        echo "========A execution failed========"
+                    }
+                }
+            }
+    stage("deploy"){
+                steps{
+                    script {
+                        gv.deployApp()
                     }
                 }
                 post{
