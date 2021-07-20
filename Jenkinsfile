@@ -34,10 +34,6 @@ pipeline{
             }
         }
         stage("test"){
-                when {
-                    expression{
-                        params.executeTest == true // this will execute test if in the section parameters/boolean above the default is true
-                    }
                 steps{
                     script {
                         gv.testApp()
