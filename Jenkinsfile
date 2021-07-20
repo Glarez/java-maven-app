@@ -1,49 +1,66 @@
+def gv
 
-pipeline {
-
+pipeline{
     agent any
-    environment { // define ENVVARS to be used by stages
-        NEW_VERSION = '1.0.1' // usuaaly you should extract the version number from source code
-        // SERVER_CREDENTIALS = credentials('server-credentials') // this take as a parameter the jenkins ID of the cred you're referencing
-    }
-    tools { // define build tools like mvn, gradle, jdk and so on for being used in stages
-        maven 'Maven' // this must be the name on maven installation in Jenkins UI predefined by you.
-    }
+
     parameters {
-        // string(name: 'VERSION', defaultValue: '', description: 'Version to deploy on')
         choice(name: 'VERSION', choices: ['1.0', '1.1', '1.2'], description: 'Some description for version')
         booleanParam(name: 'executeTest', defaultValue: true, description: 'Some description for test') // this is for being used as parameters like in Test stage
     }
-    stages {
-
-        stage ("Build") {
-            steps {
-                // echo "Building the app version ${NEW_VERSION}" // this goes along with the NEW_VERSION Var declared on environment
-                // sh "mvn install" defined on tools section
-                echo "Building the app" 
-                sh "mvn --version"
-            }
-        }
-
-        stage ("Test") {
-            when {
-                expression{
-                    params.executeTest == true // this will execute test if in the section parameters/boolean above the default is true
+    stages{
+        stage("init"){
+            steps{
+                script {
+                    gv = load "script.groovy"
                 }
             }
-            steps {
-                echo "Testing the app"
+        }
+        stage("Build"){
+            steps{
+                script {
+                    gv.buildApp()
+                }
+            }
+            post{
+                always{
+                    echo "========always========"
+                }
+                success{
+                    echo "========A executed successfully========"
+                }
+                failure{
+                    echo "========A execution failed========"
+                }
             }
         }
-        
-        stage ("Deploy") {
-            steps {
-                // echo "Deploying the app version ${NEW_VERSION}" // this is without the parameters section configured
-                echo "Deploying app version ${params.VERSION}"
-                // echo "deploying as ${SERVER_CREDENTIALS}"
-                // sh "${SERVER-CREDENTIALS}" // for issuing the creds
+        stage("Build"){
+                steps{
+                    script {
+                        gv.buildApp()
+                    }
+                }
+                post{
+                    always{
+                        echo "========always========"
+                    }
+                    success{
+                        echo "========A executed successfully========"
+                    }
+                    failure{
+                        echo "========A execution failed========"
+                    }
+                }
             }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
         }
     }
-
 }
