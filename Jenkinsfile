@@ -33,6 +33,7 @@ pipeline{
                 }
             }
         }
+<<<<<<< HEAD
         stage("test"){
                 when {
                     expression{
@@ -56,9 +57,12 @@ pipeline{
                 }
             }
     stage("deploy"){
+=======
+        stage("Build"){
+>>>>>>> parent of 991f309 (Added logic trough groovy script and renamed Jenkins decalrative way file to spam a new one II)
                 steps{
                     script {
-                        gv.deployApp()
+                        gv.buildApp()
                     }
                 }
                 post{
