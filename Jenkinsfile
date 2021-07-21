@@ -23,22 +23,17 @@ pipeline{
             }
             post{
                 always{
-                    echo "========always========"
+                    echo "========always Build========"
                 }
                 success{
-                    echo "========A executed successfully========"
+                    echo "========Build executed successfully========"
                 }
                 failure{
-                    echo "========A execution failed========"
+                    echo "========Build execution failed========"
                 }
             }
         }
-<<<<<<< HEAD
-        stage("test"){
-                when {
-                    expression{
-                        params.executeTest == true // this will execute test if in the section parameters/boolean above the default is true
-                    }
+        stage("Test"){
                 steps{
                     script {
                         gv.testApp()
@@ -46,37 +41,34 @@ pipeline{
                 }
                 post{
                     always{
-                        echo "========always========"
+                        echo "========always Test========"
                     }
                     success{
-                        echo "========A executed successfully========"
+                        echo "========Test executed successfully========"
                     }
                     failure{
-                        echo "========A execution failed========"
+                        echo "========Test execution failed========"
                     }
                 }
             }
-    stage("deploy"){
-=======
-        stage("Build"){
->>>>>>> parent of 991f309 (Added logic trough groovy script and renamed Jenkins decalrative way file to spam a new one II)
-                steps{
-                    script {
-                        gv.buildApp()
-                    }
-                }
-                post{
-                    always{
-                        echo "========always========"
-                    }
-                    success{
-                        echo "========A executed successfully========"
-                    }
-                    failure{
-                        echo "========A execution failed========"
-                    }
+            stage("Deploy"){
+            steps{
+                script {
+                    gv.deployApp()
                 }
             }
+            post{
+                always{
+                    echo "========always Deploy========"
+                }
+                success{
+                    echo "========Deploy executed successfully========"
+                }
+                failure{
+                    echo "========Deploy execution failed========"
+                }
+            }
+        }
     }
     post{
             always{
