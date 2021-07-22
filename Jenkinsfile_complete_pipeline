@@ -6,17 +6,11 @@ pipeline{
         maven 'Maven'
     }
     stages{
-        stage("Init") {
-            steps{
-                script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
         stage("Build Jar"){
             steps{
                 script {
-                   gv.buildJar()
+                    echo "========executing Maven Build========"
+                    sh "mvn package"
                 }
             }
             post{
@@ -34,7 +28,12 @@ pipeline{
         stage("Bulid Docker Image"){
                 steps{
                     script {
-                        gv.buildImage()
+                    echo "========Building the Docker image========"
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh 'docker build -t glarez/java-maven-app:1.0 .'
+                        echo "echo $PASS | docker login -u $USER --password-stdin"
+                        sh 'docker push glarez/java-maven-app:1.0'
+                    }
                     }
                 }
                 post{
@@ -51,9 +50,7 @@ pipeline{
             }
         stage("Deploy"){
                 steps{
-                    script {
-                        gv.deployApp()
-                    }
+                    echo "========executing Deploy========"
                 }
                 post{
                     always{
