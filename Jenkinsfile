@@ -1,72 +1,21 @@
-def gv
-
 pipeline{
     agent any
-    tools {
-        maven 'Maven'
-    }
     stages{
-        stage("Init") {
-            steps {
-                script {
-                    gv = load "script.groovy"
-                }
+        stage("Test & Build Jar"){
+            steps{
+                echo "========executing A========"
             }
         }
-        stage("Build Jar"){
-            steps {
-                script {
-                   gv.buildJar()
-                }
-            }
-            post{
-                always{
-                    echo "========always========"
-                }
-                success{
-                    echo "========Build executed successfully========"
-                }
-                failure{
-                    echo "========Build execution failed========"
-                }
+        stage("Build Docker Image"){
+            steps{
+                echo "========executing B======="
             }
         }
-        stage("Bulid Docker Image"){
-                steps {
-                    script {
-                        gv.buildImage()
-                    }
-                }
-                post{
-                    always{
-                        echo "========always========"
-                    }
-                    success{
-                        echo "========Build executed successfully========"
-                    }
-                    failure{
-                        echo "========Build successfully failed========"
-                    }
-                }
+         stage("Deploy App"){
+            steps{
+                echo "========executing C========"
             }
-        stage("Deploy"){
-                steps {
-                    script {
-                        gv.deployApp()
-                    }
-                }
-                post{
-                    always{
-                        echo "========always========"
-                    }
-                    success{
-                        echo "========A executed successfully========"
-                    }
-                    failure{
-                        echo "========A execution failed========"
-                    }
-                }
-            }
+        }
     }
     post{
         always{
