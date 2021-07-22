@@ -3,15 +3,32 @@ pipeline{
     stages{
         stage("Test & Build Jar"){
             steps{
-                echo "========executing A========"
+                script {
+                    echo "========executing A========"
+                    echo "Testing for $BRANCH_NAME branch"
+                }
+                
             }
         }
         stage("Build Docker Image"){
+            when {
+                    expression {
+                        BRANCH_NAME == 'main'
+                    }
+            }
             steps{
-                echo "========executing B======="
+                script {
+                    echo "========executing A========"
+                    echo "Testing for $BRANCH_NAME branch"
+                }
             }
         }
          stage("Deploy App"){
+               when {
+                    expression {
+                        BRANCH_NAME == 'main'
+                    }
+               }
             steps{
                 echo "========executing C========"
             }
