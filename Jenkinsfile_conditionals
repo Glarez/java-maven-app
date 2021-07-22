@@ -1,0 +1,50 @@
+// CODECHANGES = GetGitChanges()
+
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage ("Build") {
+            // when {
+            //     expression {
+            //         BRANCH_NAME == 'dev' || BRANCH_NAME == 'main' // Build the app based on wether it's being run on the main, dev or another branches.
+            //         CODECHANGES == True
+            //     }
+            // }
+            steps {
+                echo "Building the app"
+            }
+        }
+
+        stage ("Test") {
+            // when { // conditonals for each stage
+            //     expression {
+            //         BRANCH_NAME == 'dev' || BRANCH_NAME == 'main' // run test based on wether it's being run on the main, dev or another branches. 
+            //     }
+            // }
+            steps {
+                echo "Testing the app"
+            }
+        }
+        
+        stage ("Deploy") {
+            steps {
+                echo "Deploying the app"
+            }
+        }
+    }
+    // post {
+    //     always {
+    //         // 
+    //     }
+    //     success {
+    //         // some command like sending email for build available on QA or PRD environment
+    //     }
+    //     failure {
+    //         // some command like sending email for build went wrong on QA or PRD environment
+    //     }
+    }
+
+}
