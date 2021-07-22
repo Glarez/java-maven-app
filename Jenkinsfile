@@ -2,28 +2,20 @@ def gv
 
 pipeline{
     agent any
-
-    parameters {
-        choice(name: 'VERSION', choices: ['1.0', '1.1', '1.2'], description: 'Some description for version')
-        booleanParam(name: 'executeTest', defaultValue: true, description: 'Some description for test') // this is for being used as parameters like in Test stage
+    tools {
+        maven 'Maven'
     }
     stages{
-        stage("init"){
+        stage("Build Jar"){
             steps{
                 script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
-        stage("Build"){
-            steps{
-                script {
-                    gv.buildApp()
+                    echo "========executing Maven Build========"
+                    sh "mvn package"
                 }
             }
             post{
                 always{
-                    echo "========always Build========"
+                    echo "========always========"
                 }
                 success{
                     echo "========Build executed successfully========"
@@ -33,59 +25,54 @@ pipeline{
                 }
             }
         }
-        stage("Test"){
+        stage("Buld  Docker Image"){
                 steps{
                     script {
-                        gv.testApp()
+                    echo "========Building the Docker image========"
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')])
+                    sh 'docker build -t glarez/java-maven-app:1.1 .'
+                    echo "echo $PASS | docker login -u $USER --password-stdin"
+                    sh 'docker push glarez/java-maven-app:1.1'
                     }
                 }
                 post{
                     always{
-                        echo "========always Test========"
+                        echo "========always========"
                     }
                     success{
-                        echo "========Test executed successfully========"
+                        echo "========Build executed successfully========"
                     }
                     failure{
-                        echo "========Test execution failed========"
+                        echo "========Build successfully failed========"
                     }
                 }
             }
-            stage("Deploy"){
-                input {
-                    message "Select an environment to deploy to"
-                    ok "Go!"
-                    parameters {
-                        choice(name: 'ENV', choices: ['DEV', 'QA', 'PRD'], description: 'Some description for environmemt')
+        stage("Deploy"){
+                steps{
+                    echo "========executing Deploy========"
+                }
+                post{
+                    always{
+                        echo "========always========"
+                    }
+                    success{
+                        echo "========A executed successfully========"
+                    }
+                    failure{
+                        echo "========A execution failed========"
                     }
                 }
-            steps{
-                script {
-                    gv.deployApp()
-                }
             }
-            post{
-                always{
-                    echo "========always Deploy========"
-                }
-                success{
-                    echo "========Deploy executed successfully========"
-                }
-                failure{
-                    echo "========Deploy execution failed========"
-                }
-            }
-        }
     }
     post{
-            always{
-                echo "========always========"
-            }
-            success{
-                echo "========pipeline executed successfully ========"
-            }
-            failure{
-                echo "========pipeline execution failed========"
-            }
+        always{
+            echo "========always========"
         }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
+        failure{
+            echo "========pipeline execution failed========"
+        }
+    }
 }
