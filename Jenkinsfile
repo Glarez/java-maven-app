@@ -7,14 +7,14 @@ pipeline{
     }
     stages{
         stage("Init") {
-            steps{
+            steps {
                 script {
                     gv = load "script.groovy"
                 }
             }
         }
         stage("Build Jar"){
-            steps{
+            steps {
                 script {
                    gv.buildJar()
                 }
@@ -32,7 +32,7 @@ pipeline{
             }
         }
         stage("Bulid Docker Image"){
-                steps{
+                steps {
                     script {
                         gv.buildImage()
                     }
@@ -50,7 +50,7 @@ pipeline{
                 }
             }
         stage("Deploy"){
-                steps{
+                steps {
                     script {
                         gv.deployApp()
                     }
