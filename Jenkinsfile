@@ -1,48 +1,44 @@
-pipeline{
+#!/usr/bin/env groovy
+
+// SHARED LIBRARY IMPORT
+@library('jenkins-shared-library')
+
+
+def gv
+
+pipeline {
     agent any
-    stages{
-        stage("Test & Build Jar"){
-            steps{
-                script {
-                    echo "========executing A========"
-                    echo "Testing for $BRANCH_NAME branch"
-                }
-                
-            }
-        }
-        stage("Build Docker Image"){
-            when {
-                    expression {
-                        BRANCH_NAME == 'main'
-                    }
-            }
-            steps{
-                script {
-                    echo "========executing A========"
-                    echo "Testing for $BRANCH_NAME branch"
-                }
-            }
-        }
-         stage("Deploy App"){
-               when {
-                    expression {
-                        BRANCH_NAME == 'main'
-                    }
-               }
-            steps{
-                echo "========executing C========"
-            }
-        }
+    tools {
+        maven 'Maven'
     }
-    post{
-        always{
-            echo "========always========"
+    stages {
+        stage("init") {
+            steps {
+                script {
+
+                }
+            }
         }
-        success{
-            echo "========pipeline executed successfully ========"
+        stage("build jar") {
+            steps {
+                script {
+                    buildJar()
+                }
+            }
         }
-        failure{
-            echo "========pipeline execution failed========"
+        stage("build and push image") {
+            steps {
+                script {
+                    buildImage()
+                }
+            }
+        }
+        stage("deploy") {
+            steps {
+                script {
+                    gv.deployApp()
+                }
+            }
         }
     }
 }
