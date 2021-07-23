@@ -19,14 +19,14 @@ pipeline {
         stage("build jar") {
             steps {
                 script {
-                    buildJar()
+                    gv.buildJar()
                 }
             }
         }
-        stage("build and push image") {
+        stage("build image") {
             steps {
                 script {
-                    buildImage()
+                    gv.buildImage()
                 }
             }
         }
