@@ -1,9 +1,6 @@
 #!/usr/bin/env groovy
 
-// SHARED LIBRARY IMPORT
 @library('jenkins-shared-library')
-
-
 def gv
 
 pipeline {
@@ -15,7 +12,7 @@ pipeline {
         stage("init") {
             steps {
                 script {
-
+                    gv = load "script.groovy"
                 }
             }
         }
