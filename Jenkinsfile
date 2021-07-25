@@ -24,10 +24,13 @@ pipeline {
                 }
             }
         }
-        stage("build image") {
+        stage("build and push image") {
             steps {
                 script {
-                    buildImage 'glarez/java-maven-app:1.1'
+                    buildImage 'glarez/java-maven-app:1.2'
+                    dockerLogin ()
+                    dockerPush 'glarez/java-maven-app:1.2'
+
                 }
             }
         }

@@ -48,5 +48,3 @@ pipeline {
     //         // some command like sending email for build went wrong on QA or PRD environment
     //     }
     }
-
-}
