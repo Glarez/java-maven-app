@@ -27,7 +27,7 @@ pipeline {
         stage("build image") {
             steps {
                 script {
-                    buildImage()
+                    buildImage 'glarez/java-maven-app:1.1'
                 }
             }
         }

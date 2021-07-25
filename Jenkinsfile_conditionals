@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 // CODECHANGES = GetGitChanges()
 
 pipeline {
@@ -7,12 +9,12 @@ pipeline {
     stages {
 
         stage ("Build") {
-            // when {
-            //     expression {
-            //         BRANCH_NAME == 'dev' || BRANCH_NAME == 'main' // Build the app based on wether it's being run on the main, dev or another branches.
-            //         CODECHANGES == True
-            //     }
-            // }
+             when {
+                 expression {
+                     BRANCH_NAME == 'QA' || BRANCH_NAME == 'PROD'
+                     CODECHANGES == True
+                 }
+             }
             steps {
                 echo "Building the app"
             }
