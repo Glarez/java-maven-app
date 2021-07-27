@@ -26,11 +26,6 @@ pipeline{
             }
         }
          stage("Deploy App"){
-               when {
-                    expression {
-                        BRANCH_NAME == 'main'
-                    }
-               }
             steps{
                 echo "========executing C========"
                 def dockerCmd = 'docker run -d -p 3080:3080 glarez/java-maven-app:1.0 '
