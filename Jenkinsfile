@@ -1,3 +1,5 @@
+!#/usr/bin/env groovy
+
 pipeline{
     agent any
     stages{
@@ -31,6 +33,11 @@ pipeline{
                }
             steps{
                 echo "========executing C========"
+                def dockerCmd = 'docker run -d -p 3080:3080 glarez/java-maven-app:1.0 '
+                sshagent(['aws-ec2']) {
+                sh "ssh -o StrictHostKeyChecking=no ec2-user@52.67.250.214 ${dockerCmd}"
+                }
+
             }
         }
     }
